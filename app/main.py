@@ -19,7 +19,7 @@ logging.basicConfig(level=logging.INFO)
 bot = Bot(token=TELEGRAM_API_TOKEN)
 dp = Dispatcher(bot)
 dp.middleware.setup(LocaleMiddleware("./localization"))
-dp.middleware.setup(AntiSpamMiddleware(limit=60))
+dp.middleware.setup(AntiSpamMiddleware(limit=30, delay=30))
 dp.middleware.setup(NewUserMiddleware())
 
 main_state = AiogramMainRouter(dp)

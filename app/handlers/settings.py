@@ -5,7 +5,7 @@ from state_manager.routes.aiogram import AiogramRouter
 
 from app.dependencies.locale import get_locale
 from app.dependencies.user import get_user
-from app.filters.text import SettingsFilter
+from app.filters.settings import SettingsFilter
 from app.keybords.keybords import (
     menu_keyboard,
     settings_city_keyboard,

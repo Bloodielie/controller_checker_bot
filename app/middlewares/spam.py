@@ -15,7 +15,8 @@ class AntiSpamMiddleware(BaseMiddleware):
 
     async def check_user(self, user_obj: types.User) -> bool:
         if not self.is_running:
-            asyncio.create_task(self._run_cleaner())
+            self.is_running = True
+            asyncio.ensure_future(self._run_cleaner())
 
         number_of_user_requests = self.users_requests.get(user_obj.id)
         if number_of_user_requests is None:
@@ -28,7 +29,7 @@ class AntiSpamMiddleware(BaseMiddleware):
 
     async def _run_cleaner(self) -> None:
         while self.is_running:
-            self.users_requests.clear()
+            self.users_requests = {}
             await asyncio.sleep(self._delay)
 
     async def on_pre_process_message(self, message: types.Message, data: dict) -> None:

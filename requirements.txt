@@ -1,4 +1,4 @@
-state_manager==0.1.4
+state_manager==0.1.7
 aiohttp==3.6.2
 asyncpg==0.20.1
 aiofiles==0.5.0
