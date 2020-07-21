@@ -14,8 +14,7 @@ class SettingsFilter(BaseFilter):
         self.func_with_raw_data = func_with_raw_data
 
     async def check(self, msg: types.Message, state_manager: AiogramStateManager, locale=Depends(get_locale)) -> bool:  # type: ignore
-        text = self.func_with_raw_data(locale)
-        if msg.text.lower() in text:
+        if msg.text.lower() in [word.lower() for word in self.func_with_raw_data(locale)]:
             return True
         else:
             if msg.text.lower() == locale.back.lower():
