@@ -20,7 +20,7 @@
   "settings_city_msg": "Выбери город.",
   "settings_representation_msg": "Выбери представление.",
   "settings_number_of_posts_msg": "Выбери количество постов.",
-  "number_of_posts": [5, 10, 15, 20],
+  "number_of_posts": [5, 10, 15, 20, 25, 30],
   "photo_no_support": "Фото в данный момент не поддерживается.",
   "spam_limit": "Достигнут лимит количества сообщений",
   "failed_settings": "Ты указали не правильные данные."

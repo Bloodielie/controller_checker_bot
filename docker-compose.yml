@@ -1,0 +1,49 @@
+version: '3.1'
+
+services:
+  redis:
+    image: redis
+    restart: always
+    ports:
+      - "6379"
+    networks:
+      backend:
+        ipv4_address: 10.0.10.2
+
+  db:
+    image: postgres:10.13
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 1234
+      POSTGRES_DB: controllercheckerbot
+    restart: always
+    ports:
+      - "5432"
+    networks:
+      backend:
+        ipv4_address: 10.0.10.5
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data
+
+  bot:
+    container_name: bot
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    command: python main.py
+    networks:
+      backend:
+        ipv4_address: 10.0.10.4
+    restart: always
+    env_file:
+      - ".env"
+    depends_on:
+      - db
+      - redis
+
+networks:
+  backend:
+    ipam:
+      driver: default
+      config:
+        - subnet: 10.0.10.0/24

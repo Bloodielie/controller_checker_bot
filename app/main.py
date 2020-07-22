@@ -1,4 +1,12 @@
 import logging
+import os
+import sys
+
+from state_manager import RedisStorage
+from state_manager.storage_settings import StorageSettings
+
+dir_path = os.path.dirname(os.path.realpath(__file__))
+sys.path.insert(0, os.path.split(dir_path)[0])
 
 from aiogram import Bot, Dispatcher, executor
 
