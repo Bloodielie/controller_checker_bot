@@ -5,7 +5,7 @@ from state_manager import Depends
 from state_manager.filters.base import BaseFilter
 from state_manager.models.dependencys.aiogram import AiogramStateManager
 
-from app.dependencies.locale import get_locale
+from app.depends import get_locale
 from app.keybords.keybords import settings_keyboard
 
 

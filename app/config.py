@@ -1,4 +1,6 @@
 from app.utils.config import Config
+from dotenv import load_dotenv
+load_dotenv()
 
 config = Config(".env")
 
@@ -6,14 +8,7 @@ DB_URL = config("DB_URL", cast=str)
 VK_API_TOKEN = config("VK_API_TOKEN", cast=str)
 TELEGRAM_API_TOKEN = config("TELEGRAM_API_TOKEN", cast=str)
 BREST_GROUP_ID = config("BREST_GROUP_ID", cast=int)
-storage_dsn = config("storage_dsn", cast=str)
-
-TORTOISE_ORM = {
-    "connections": {"default": DB_URL},
-    "apps": {
-        "models": {"models": ["app.models.user", "app.models.bus_stop", "app.models.settings"], "default_connection": "default",},
-    },
-}
+# storage_dsn = config("storage_dsn", cast=str)
 
 # img
 PATH_TO_BASE_IMG = config("PATH_TO_BASE_IMG", cast=str, default="./images/base.jpg")

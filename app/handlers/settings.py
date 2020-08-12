@@ -3,9 +3,10 @@ from state_manager import Depends
 from state_manager.models.dependencys.aiogram import AiogramStateManager
 from state_manager.routes.aiogram import AiogramRouter
 
-from app.dependencies.locale import get_locale
-from app.dependencies.user import get_user
-from app.filters.settings import SettingsFilter
+from app.db.enum import City, Representation
+from app.db.repositories.user import UserRepository
+from app.depends import get_locale
+from app.filters import SettingsFilter
 from app.keybords.keybords import (
     menu_keyboard,
     settings_city_keyboard,
@@ -13,7 +14,6 @@ from app.keybords.keybords import (
     settings_number_of_posts_keyboard,
 )
 from app.keybords.raw_text import city_raw_text, representation_raw_text, number_of_posts_raw_text
-from app.models.settings import City, Settings, Representation
 from app.utils.utils import find_value_in_enum
 
 settings_state = AiogramRouter()
@@ -38,28 +38,28 @@ async def settings(msg: types.Message, state_manager: AiogramStateManager, local
 
 @settings_state.message_handler(SettingsFilter(city_raw_text))
 async def settings_city(
-    msg: types.Message, state_manager: AiogramStateManager, locale=Depends(get_locale), user=Depends(get_user)
+    msg: types.Message, state_manager: AiogramStateManager, user_rep: UserRepository, locale=Depends(get_locale)
 ):
     city = find_value_in_enum(msg.text, City, locale)
-    await Settings.filter(id=user.settings.id).update(city=city)
+    await user_rep.update_settings_by_telegram_id(telegram_id=msg.from_user.id, city=city)
     await state_manager.set_next_state("main_menu")
     await msg.answer(locale.main_menu, reply_markup=menu_keyboard(locale))
 
 
 @settings_state.message_handler(SettingsFilter(representation_raw_text))
 async def settings_representation(
-    msg: types.Message, state_manager: AiogramStateManager, locale=Depends(get_locale), user=Depends(get_user)
+    msg: types.Message, state_manager: AiogramStateManager, user_rep: UserRepository, locale=Depends(get_locale)
 ):
     representation = find_value_in_enum(msg.text, Representation, locale)
-    await Settings.filter(id=user.settings.id).update(representation=representation)
+    await user_rep.update_settings_by_telegram_id(telegram_id=msg.from_user.id, representation=representation)
     await state_manager.set_next_state("main_menu")
     await msg.answer(locale.main_menu, reply_markup=menu_keyboard(locale))
 
 
 @settings_state.message_handler(SettingsFilter(number_of_posts_raw_text))
 async def settings_number_of_posts(
-    msg: types.Message, state_manager: AiogramStateManager, locale=Depends(get_locale), user=Depends(get_user)
+    msg: types.Message, state_manager: AiogramStateManager, user_rep: UserRepository, locale=Depends(get_locale),
 ):
-    await Settings.filter(id=user.settings.id).update(number_of_posts=int(msg.text.lower()))
+    await user_rep.update_settings_by_telegram_id(telegram_id=msg.from_user.id, number_of_posts=int(msg.text.lower()))
     await state_manager.set_next_state("main_menu")
     await msg.answer(locale.main_menu, reply_markup=menu_keyboard(locale))
