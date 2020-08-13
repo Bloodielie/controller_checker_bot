@@ -18,7 +18,7 @@ fileConfig(config.config_file_name)
 
 from app.db.models import metadata
 
-config.set_main_option('sqlalchemy.url', "postgres://postgres:1234@localhost/controllercheckerbot")
+config.set_main_option('sqlalchemy.url', "postgres://postgres:1234@10.0.10.6:5432/controllercheckerbot")
 target_metadata = metadata
 
 

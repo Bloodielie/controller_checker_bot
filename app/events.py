@@ -47,13 +47,16 @@ def startup_wrapper(database: Database) -> Callable[[Dispatcher], Awaitable[None
     async def startup(_) -> None:
         await database.connect()
         system_user = await UserRepository(database).default_executor(
-            users.select().where(and_(users.c.id == 1, users.c.username == "system")), User
+            users.select().where(and_(users.c.telegram_id == 1, users.c.username == "system")), User
         )
         if system_user is None:
             settings_id = await SettingsRepository(database).create(
                 number_of_posts=15, city=City.brest.value, representation=Representation.text.value
             )
             await database.execute(users.insert().values(username="system", telegram_id=1, settings_id=settings_id))
+            system_user = await UserRepository(database).default_executor(
+                users.select().where(and_(users.c.telegram_id == 1, users.c.username == "system")), User
+            )
 
         asyncio.ensure_future(scraper(database, system_user, BREST_GROUP_ID, PostGetter, City.brest))
 

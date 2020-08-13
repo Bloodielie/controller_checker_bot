@@ -6,9 +6,6 @@ COPY requirements.txt .
 
 RUN pip install -r requirements.txt
 
-COPY alembic.ini .
-COPY ./alembic .
-
-RUN alembic upgrade head
-
-COPY ./app .
+COPY alembic.ini ./alembic.ini
+COPY alembic /app/alembic
+COPY ./app ./app

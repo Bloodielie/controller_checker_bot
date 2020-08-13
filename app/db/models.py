@@ -8,7 +8,7 @@ users = Table(
     "users",
     metadata,
     Column("id", Integer, primary_key=True, unique=True),
-    Column("telegram_id", Integer, primary_key=True),
+    Column("telegram_id", Integer),
     Column("username", String(100), nullable=True),
     Column("time_of_last_receipt", DateTime, nullable=True),
     Column("settings_id", ForeignKey("settings.id")),

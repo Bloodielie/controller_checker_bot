@@ -8,7 +8,7 @@ services:
       - "6379"
     networks:
       backend:
-        ipv4_address: 10.0.10.2
+        ipv4_address: 10.0.10.3
 
   db:
     image: postgres:10.13
@@ -21,7 +21,7 @@ services:
       - "5432"
     networks:
       backend:
-        ipv4_address: 10.0.10.5
+        ipv4_address: 10.0.10.6
     volumes:
       - ./postgres-data:/var/lib/postgresql/data
 
@@ -30,10 +30,10 @@ services:
     build:
       context: .
       dockerfile: docker/Dockerfile
-    command: python main.py
+    command: bash -c "alembic upgrade head && python app/main.py"
     networks:
       backend:
-        ipv4_address: 10.0.10.4
+        ipv4_address: 10.0.10.7
     restart: always
     env_file:
       - ".env"

@@ -34,7 +34,7 @@ def install_bot():
     database = Database(DB_URL)
     main_state = AiogramMainRouter(dp)
 
-    dp.middleware.setup(LocaleMiddleware("./localization"))
+    dp.middleware.setup(LocaleMiddleware(f"{os.path.split(dir_path)[0]}/app/localization"))
     dp.middleware.setup(AntiSpamMiddleware(limit=30, delay=30))
 
     main_state.container.bind_constant(Database, database)
